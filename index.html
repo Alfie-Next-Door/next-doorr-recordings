@@ -82,6 +82,13 @@
         .nav-link:hover, .nav-link.active {
             color: #A7C957;
         }
+        .social-link {
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+        .social-link:hover {
+            color: #A7C957;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -206,8 +213,8 @@
             </section>
 
             <section id="artists" class="scroll-mt-20">
-                <h2 class="text-3xl font-bold text-center mb-2">Our Sound: The Artist Radar</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-8 text-center">We seek innovative, genre-blurring artists. Click an artist to generate an AI bio.</p>
+                <h2 class="text-3xl font-bold text-center mb-2">Artists on our radar</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-8 text-center">A look at the innovative, genre-blurring artists who inspire our soundscape.</p>
                 <div class="card rounded-lg p-4 md:p-6">
                     <div class="chart-container">
                         <canvas id="artistRadarChart"></canvas>
@@ -228,9 +235,9 @@
             <p class="text-lg font-bold">Next Door Recordings</p>
             <p class="text-gray-400">A New Model for Music</p>
             <div class="flex justify-center space-x-6 mt-4">
-                <a href="#" class="text-gray-400 hover:text-white">Instagram</a>
-                <a href="#" class="text-gray-400 hover:text-white">Bandcamp</a>
-                <a href="#" class="text-gray-400 hover:text-white">Soundcloud</a>
+                <a href="https://www.instagram.com/your-label-instagram" target="_blank" rel="noopener noreferrer" class="social-link">Instagram</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="social-link">Bandcamp</a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="social-link">Soundcloud</a>
             </div>
             <p class="text-xs text-gray-500 mt-6">&copy; 2025 Next Door Recordings. All Rights Reserved.</p>
         </div>
@@ -316,12 +323,20 @@
         const handleArtistClick = async (event, elements, chart) => {
             if (elements.length > 0) {
                 const dataIndex = elements[0].index;
-                const artistName = chart.data.labels[dataIndex];
-                const finalArtistName = Array.isArray(artistName) ? artistName.join(' ') : artistName;
+                const artist = artistData[dataIndex];
                 
-                const prompt = `Generate a short, creative, and stylish bio (around 40-50 words) for the musician "${finalArtistName}". Imagine they are an artist on Next Door Recordings, a label that champions music bridging the gap between live performance and electronic sounds. The tone should be modern, slightly edgy, and compelling, like a bio on a cutting-edge record label's website.`;
+                const prompt = `Generate a short, creative, and stylish bio (around 40-50 words) for the musician "${artist.name}". Imagine they are an artist on Next Door Recordings, a label that champions music bridging the gap between live performance and electronic sounds. The tone should be modern, slightly edgy, and compelling, like a bio on a cutting-edge record label's website.`;
                 const bio = await callGemini(prompt);
-                artistBioOutput.innerHTML = `<h3 class="font-bold text-lg mb-2" style="color:#A7C957;">${finalArtistName}</h3><p>${bio.replace(/\n/g, '<br>')}</p>`;
+
+                const instagramLink = artist.instagram 
+                    ? `<a href="https://www.instagram.com/${artist.instagram.replace('@','')}" target="_blank" rel="noopener noreferrer" class="social-link mt-2 inline-block font-bold">Find on Instagram</a>` 
+                    : '';
+
+                artistBioOutput.innerHTML = `
+                    <h3 class="font-bold text-lg mb-2" style="color:#A7C957;">${artist.name}</h3>
+                    <p>${bio.replace(/\n/g, '<br>')}</p>
+                    ${instagramLink}
+                `;
                 artistBioOutput.classList.remove('hidden');
             }
         };
@@ -365,17 +380,41 @@
         };
 
         const artistData = [
-            'Gwenno', 'Hohnen Ford', 'Yasmin Lacey', 'Maddie Ashman', 'Marie Davidson',
-            'Nightmares on Wax', 'Binary Digit', 'Boy Harsher', 'James Holden', 'Barker',
-            'Mathew Jonson', 'Cobblestone Jazz', 'Fat Dog', 'Radioactive Man', 'Deadletter',
-            'MAD', 'Josh Caffe band', 'Decius'
+            { name: 'Gwenno', instagram: 'gwenno' },
+            { name: 'Hohnen Ford', instagram: 'hohnenford' },
+            { name: 'Yasmin Lacey', instagram: 'yasminlacey' },
+            { name: 'Maddie Ashman', instagram: 'maddieashmanmusic' },
+            { name: 'Marie Davidson', instagram: 'mariedavidson.official' },
+            { name: 'Nightmares on Wax', instagram: 'nightmaresonwax' },
+            { name: 'Binary Digit', instagram: '' },
+            { name: 'Boy Harsher', instagram: 'boyharsher' },
+            { name: 'James Holden', instagram: 'jamesholden808' },
+            { name: 'Barker', instagram: 'sam_barker_' },
+            { name: 'Mathew Jonson', instagram: 'mathew_jonson' },
+            { name: 'Cobblestone Jazz', instagram: '' },
+            { name: 'Fat Dog', instagram: 'fatdogfatdog' },
+            { name: 'Radioactive Man', instagram: '' },
+            { name: 'Deadletter', instagram: 'deadletter' },
+            { name: 'MAD', instagram: '' },
+            { name: 'Josh Caffe band', instagram: 'josh_caffe' },
+            { name: 'Decius', instagram: 'decius.official' },
+            { name: 'Tom McFarlane', instagram: '' },
+            { name: 'Sam Gellaitry', instagram: 'samgellaitry' },
+            { name: 'Dot Major', instagram: 'dotmajor' },
+            { name: 'Absolute', instagram: 'absoluteishere' },
+            { name: 'Kassian', instagram: 'kassianmusic' },
+            { name: 'Oscar Farrell', instagram: '' },
+            { name: 'Alfie Aukett', instagram: '' },
+            { name: 'Stinkbug', instagram: '' },
+            { name: 'Josh Ludlow', instagram: '' },
+            { name: 'Luxe', instagram: 'luxe_uk' }
         ];
 
         const artistRadarCtx = document.getElementById('artistRadarChart').getContext('2d');
         const artistRadarChart = new Chart(artistRadarCtx, {
             type: 'bubble',
             data: {
-                labels: artistData.map(wrapLabel),
+                labels: artistData.map(artist => wrapLabel(artist.name)),
                 datasets: [{
                     label: 'Artist on Radar',
                     data: artistData.map(() => ({
@@ -423,3 +462,4 @@
 
 </body>
 </html>
+
