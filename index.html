@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Door Recordings | Official Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #3A4D4A;
+            color: #F0EAD6;
+            position: relative;
+            z-index: 0;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('path/to/your/logo.png'); /* <<< REPLACE THIS URL */
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            opacity: 0.05;
+            z-index: -1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .card {
+            background-color: rgba(58, 77, 74, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(240, 234, 214, 0.1);
+            transition: all 0.3s ease;
+        }
+        .flow-arrow {
+            color: #A7C957;
+            font-size: 2rem;
+            line-height: 1;
+        }
+        .gemini-button {
+            background-color: #A7C957;
+            color: #3A4D4A;
+            transition: background-color 0.3s ease;
+        }
+        .gemini-button:hover {
+            background-color: #F0EAD6;
+        }
+        #loading-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .spinner {
+            border-top-color: #A7C957;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .logo-text {
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            line-height: 0.9;
+            color: #F0EAD6;
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #A7C957;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="loading-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden opacity-0">
+        <div class="spinner h-16 w-16 animate-spin rounded-full border-4 border-gray-500"></div>
+    </div>
+
+    <header class="sticky top-0 z-40 bg-opacity-80 backdrop-blur-lg" style="background-color: #3A4D4A;">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-black text-white">NDR</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link text-lg">About</a>
+                <a href="#structure" class="nav-link text-lg">Structure</a>
+                <a href="#projects" class="nav-link text-lg">Projects</a>
+                <a href="#artists" class="nav-link text-lg">Artists</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-6 text-lg nav-link">About</a>
+            <a href="#structure" class="block py-2 px-6 text-lg nav-link">Structure</a>
+            <a href="#projects" class="block py-2 px-6 text-lg nav-link">Projects</a>
+            <a href="#artists" class="block py-2 px-6 text-lg nav-link">Artists</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="text-center py-20 md:py-32">
+            <div class="logo-text">Next Door</div>
+            <div class="logo-text">Recordings</div>
+            <p class="text-xl md:text-2xl font-light mt-6" style="color: #A7C957;">Bridging the gap between live performance and electronic music.</p>
+        </section>
+
+        <div class="container mx-auto p-4 md:p-8 space-y-24">
+
+            <section id="about" class="text-center scroll-mt-20">
+                <h2 class="text-3xl font-bold mb-2">Our Foundation: A Physical & Digital Ecosystem</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-12">We provide more than a label; we offer a tangible hub for artists and fans. Our unique infrastructure is the backbone of a thriving community, built from the ground up.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card rounded-lg p-8 text-center">
+                        <div class="text-6xl mb-4">🏢</div>
+                        <h3 class="text-5xl font-extrabold" style="color: #F0EAD6;">3</h3>
+                        <p class="text-xl font-semibold mt-2">Physical London Locations</p>
+                    </div>
+                    <div class="card rounded-lg p-8 text-center">
+                        <div class="text-6xl mb-4">🎤</div>
+                        <h3 class="text-5xl font-extrabold" style="color: #F0EAD6;">2</h3>
+                        <p class="text-xl font-semibold mt-2">Dedicated Live Music Venues</p>
+                    </div>
+                    <div class="card rounded-lg p-8 text-center">
+                        <div class="text-6xl mb-4">🎧</div>
+                        <h3 class="text-5xl font-extrabold" style="color: #F0EAD6;">1</h3>
+                        <p class="text-xl font-semibold mt-2">Unique 'Fridge' Studio</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="structure" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-center mb-12">Our Release Structure</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="card rounded-lg p-8 flex flex-col">
+                        <h3 class="text-3xl font-black mb-4 text-center">Next Door Recordings</h3>
+                        <p class="text-gray-300 text-center flex-grow">The core of our soundscape. Singles, EPs, and full-length albums exploring the space between live performance and electronic artistry.</p>
+                        <div class="flex justify-around mt-6 text-center text-lg">
+                            <span>🎵 Singles</span>
+                            <span>💿 EPs</span>
+                            <span>📀 Albums</span>
+                        </div>
+                    </div>
+                    <div class="card rounded-lg p-8 flex flex-col">
+                        <h3 class="text-3xl font-black mb-4 text-center">NDR</h3>
+                        <p class="text-gray-300 text-center flex-grow">Our club-focused offshoot. Raw, dancefloor-ready tracks with a focus on vinyl and digital releases for the purists.</p>
+                        <div class="flex justify-around mt-6 text-center text-lg">
+                            <span>⚫ Vinyl Focus</span>
+                            <span>💻 Digital</span>
+                            <span>🎵 Singles & EPs</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="projects" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-center mb-2">Flagship Project: 'From the Fridge'</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-12 text-center">Our launch series unites top-tier artists for a charitable cause, creating a unique collection of music born in our converted studio. This is our mission in action.</p>
+                <div class="card rounded-lg p-8 mb-8">
+                    <div class="flex flex-col md:flex-row items-center justify-around space-y-8 md:space-y-0 md:space-x-4 text-center">
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl mb-2">👨‍🎤</div>
+                            <h4 class="text-lg font-bold">Artist Invitation</h4>
+                            <p class="text-sm max-w-xs text-gray-300">Diverse artists enter the Fridge studio to create a track.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block">&rarr;</div>
+                        <div class="flow-arrow block md:hidden">&darr;</div>
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl mb-2">🎵</div>
+                            <h4 class="text-lg font-bold">Single Release</h4>
+                            <p class="text-sm max-w-xs text-gray-300">Each track is released digitally via Bandcamp & streaming.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block">&rarr;</div>
+                        <div class="flow-arrow block md:hidden">&darr;</div>
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl mb-2">💿</div>
+                            <h4 class="text-lg font-bold">Vinyl Compilation</h4>
+                            <p class="text-sm max-w-xs text-gray-300">Singles are compiled onto a limited vinyl LP every 6-12 months.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block">&rarr;</div>
+                        <div class="flow-arrow block md:hidden">&darr;</div>
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl mb-2">💖</div>
+                            <h4 class="text-lg font-bold">Charity Donation</h4>
+                            <p class="text-sm max-w-xs text-gray-300">All proceeds support grassroots music venue charities.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="generate-idea-btn" class="gemini-button font-bold py-3 px-6 rounded-lg text-lg">✨ Generate a Session Idea</button>
+                    <div id="session-idea-output" class="card rounded-lg p-6 mt-6 max-w-2xl mx-auto text-left hidden"></div>
+                </div>
+            </section>
+
+            <section id="artists" class="scroll-mt-20">
+                <h2 class="text-3xl font-bold text-center mb-2">Our Sound: The Artist Radar</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-8 text-center">We seek innovative, genre-blurring artists. Click an artist to generate an AI bio.</p>
+                <div class="card rounded-lg p-4 md:p-6">
+                    <div class="chart-container">
+                        <canvas id="artistRadarChart"></canvas>
+                    </div>
+                </div>
+                <div id="artist-bio-output" class="card rounded-lg p-6 mt-6 text-left hidden"></div>
+            </section>
+
+            <section id="impact" class="text-center scroll-mt-20">
+                <h2 class="text-3xl font-bold mb-2">The Impact: Community & Charity</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-300">Our model is built on a simple but powerful principle: using music to create a positive impact and support the culture that inspires us.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-black bg-opacity-20 mt-24">
+        <div class="container mx-auto text-center py-8">
+            <p class="text-lg font-bold">Next Door Recordings</p>
+            <p class="text-gray-400">A New Model for Music</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="#" class="text-gray-400 hover:text-white">Instagram</a>
+                <a href="#" class="text-gray-400 hover:text-white">Bandcamp</a>
+                <a href="#" class="text-gray-400 hover:text-white">Soundcloud</a>
+            </div>
+            <p class="text-xs text-gray-500 mt-6">&copy; 2025 Next Door Recordings. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const loadingModal = document.getElementById('loading-modal');
+        const generateIdeaBtn = document.getElementById('generate-idea-btn');
+        const sessionIdeaOutput = document.getElementById('session-idea-output');
+        const artistBioOutput = document.getElementById('artist-bio-output');
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        const showLoading = () => {
+            loadingModal.classList.remove('hidden');
+            setTimeout(() => loadingModal.classList.remove('opacity-0'), 10);
+        };
+
+        const hideLoading = () => {
+            loadingModal.classList.add('opacity-0');
+            setTimeout(() => loadingModal.classList.add('hidden'), 300);
+        };
+        
+        async function callGemini(prompt, maxRetries = 3) {
+            showLoading();
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    hideLoading();
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error("Invalid response structure from Gemini API.");
+                    }
+                } catch (error) {
+                    console.error(`Attempt ${i + 1} failed:`, error);
+                    if (i === maxRetries - 1) {
+                        hideLoading();
+                        return "Sorry, we couldn't generate a response right now. Please try again later.";
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
+                }
+            }
+        }
+
+        generateIdeaBtn.addEventListener('click', async () => {
+            const prompt = "You are a creative director for Next Door Recordings, a record label bridging live and electronic music. Generate a unique concept for a 'From the Fridge' recording session. The concept should include a potential genre fusion, a unique instrument or piece of gear to feature, and a mood or theme for the track. Make it sound exciting and innovative in about 3-4 sentences.";
+            const idea = await callGemini(prompt);
+            sessionIdeaOutput.innerHTML = idea.replace(/\n/g, '<br>');
+            sessionIdeaOutput.classList.remove('hidden');
+        });
+
+        const handleArtistClick = async (event, elements, chart) => {
+            if (elements.length > 0) {
+                const dataIndex = elements[0].index;
+                const artistName = chart.data.labels[dataIndex];
+                const finalArtistName = Array.isArray(artistName) ? artistName.join(' ') : artistName;
+                
+                const prompt = `Generate a short, creative, and stylish bio (around 40-50 words) for the musician "${finalArtistName}". Imagine they are an artist on Next Door Recordings, a label that champions music bridging the gap between live performance and electronic sounds. The tone should be modern, slightly edgy, and compelling, like a bio on a cutting-edge record label's website.`;
+                const bio = await callGemini(prompt);
+                artistBioOutput.innerHTML = `<h3 class="font-bold text-lg mb-2" style="color:#A7C957;">${finalArtistName}</h3><p>${bio.replace(/\n/g, '<br>')}</p>`;
+                artistBioOutput.classList.remove('hidden');
+            }
+        };
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const sharedTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback },
+                    backgroundColor: '#3A4D4A',
+                    titleFont: { size: 16 },
+                    bodyFont: { size: 14 },
+                    padding: 12,
+                    cornerRadius: 4,
+                    borderColor: '#A7C957',
+                    borderWidth: 1
+                }
+            }
+        };
+
+        const artistData = [
+            'Gwenno', 'Hohnen Ford', 'Yasmin Lacey', 'Maddie Ashman', 'Marie Davidson',
+            'Nightmares on Wax', 'Binary Digit', 'Boy Harsher', 'James Holden', 'Barker',
+            'Mathew Jonson', 'Cobblestone Jazz', 'Fat Dog', 'Radioactive Man', 'Deadletter',
+            'MAD', 'Josh Caffe band', 'Decius'
+        ];
+
+        const artistRadarCtx = document.getElementById('artistRadarChart').getContext('2d');
+        const artistRadarChart = new Chart(artistRadarCtx, {
+            type: 'bubble',
+            data: {
+                labels: artistData.map(wrapLabel),
+                datasets: [{
+                    label: 'Artist on Radar',
+                    data: artistData.map(() => ({
+                        x: Math.random() * 10,
+                        y: Math.random() * 10,
+                        r: 15 
+                    })),
+                    backgroundColor: '#A7C957',
+                    borderColor: '#F0EAD6',
+                    borderWidth: 1,
+                    hoverBackgroundColor: '#F0EAD6',
+                    hoverBorderColor: '#A7C957'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...sharedTooltipOptions,
+                scales: { x: { display: false }, y: { display: false } },
+                plugins: { ...sharedTooltipOptions.plugins, legend: { display: false } },
+                onClick: (event, elements) => handleArtistClick(event, elements, artistRadarChart)
+            }
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').substring(1) === entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
