@@ -17,20 +17,6 @@
             position: relative;
             z-index: 0;
         }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('path/to/your/logo.png'); /* <<< REPLACE THIS URL */
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: contain;
-            opacity: 0.05;
-            z-index: -1;
-        }
         .chart-container {
             position: relative;
             width: 100%;
@@ -39,6 +25,10 @@
             margin-right: auto;
             height: 400px;
             max-height: 50vh;
+        }
+        /* Make canvas clickable where links exist */
+        #artistRadarChart {
+            cursor: pointer;
         }
         .card {
             background-color: rgba(58, 77, 74, 0.7);
@@ -50,24 +40,6 @@
             color: #A7C957;
             font-size: 2rem;
             line-height: 1;
-        }
-        .gemini-button {
-            background-color: #A7C957;
-            color: #3A4D4A;
-            transition: background-color 0.3s ease;
-        }
-        .gemini-button:hover {
-            background-color: #F0EAD6;
-        }
-        #loading-modal {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .spinner {
-            border-top-color: #A7C957;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
         .logo-text {
             font-weight: 900;
@@ -92,10 +64,6 @@
     </style>
 </head>
 <body class="antialiased">
-
-    <div id="loading-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden opacity-0">
-        <div class="spinner h-16 w-16 animate-spin rounded-full border-4 border-gray-500"></div>
-    </div>
 
     <header class="sticky top-0 z-40 bg-opacity-80 backdrop-blur-lg" style="background-color: #3A4D4A;">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -206,21 +174,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-center">
-                    <button id="generate-idea-btn" class="gemini-button font-bold py-3 px-6 rounded-lg text-lg">✨ Generate a Session Idea</button>
-                    <div id="session-idea-output" class="card rounded-lg p-6 mt-6 max-w-2xl mx-auto text-left hidden"></div>
-                </div>
             </section>
 
             <section id="artists" class="scroll-mt-20">
                 <h2 class="text-3xl font-bold text-center mb-2">Artists on our radar</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-8 text-center">A look at the innovative, genre-blurring artists who inspire our soundscape.</p>
+                <p class="max-w-3xl mx-auto text-lg text-gray-300 mb-8 text-center">A look at the innovative, genre-blurring artists who inspire our soundscape. Click an artist to visit their page.</p>
                 <div class="card rounded-lg p-4 md:p-6">
                     <div class="chart-container">
                         <canvas id="artistRadarChart"></canvas>
                     </div>
                 </div>
-                <div id="artist-bio-output" class="card rounded-lg p-6 mt-6 text-left hidden"></div>
             </section>
 
             <section id="impact" class="text-center scroll-mt-20">
@@ -235,113 +198,72 @@
             <p class="text-lg font-bold">Next Door Recordings</p>
             <p class="text-gray-400">A New Model for Music</p>
             <div class="flex justify-center space-x-6 mt-4">
-                <a href="https://www.instagram.com/your-label-instagram" target="_blank" rel="noopener noreferrer" class="social-link">Instagram</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-link">Bandcamp</a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-link">Soundcloud</a>
+                <a href="https://www.instagram.com/nextdoorrecords_" target="_blank" rel="noopener noreferrer" class="social-link">Instagram</a>
             </div>
             <p class="text-xs text-gray-500 mt-6">&copy; 2025 Next Door Recordings. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
-        const loadingModal = document.getElementById('loading-modal');
-        const generateIdeaBtn = document.getElementById('generate-idea-btn');
-        const sessionIdeaOutput = document.getElementById('session-idea-output');
-        const artistBioOutput = document.getElementById('artist-bio-output');
-
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
-        mobileMenuButton.addEventListener('click', () => {
+        mobileMenuButton.addEventListener('click', function() {
             mobileMenu.classList.toggle('hidden');
         });
         
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
+        document.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', function() {
                 if (!mobileMenu.classList.contains('hidden')) {
                     mobileMenu.classList.add('hidden');
                 }
             });
         });
 
-        const showLoading = () => {
-            loadingModal.classList.remove('hidden');
-            setTimeout(() => loadingModal.classList.remove('opacity-0'), 10);
-        };
+        const artistData = [
+            { name: 'Gwenno', instagram: 'gwennomorgan' },
+            { name: 'Hohnen Ford', instagram: 'hohnenford' },
+            { name: 'Yasmin Lacey', instagram: 'yasminlacey' },
+            { name: 'Maddie Ashman', instagram: 'maddieashmanmusic' },
+            { name: 'Marie Davidson', instagram: 'mariedavidson.official' },
+            { name: 'Nightmares on Wax', instagram: 'nightmaresonwax' },
+            { name: 'Binary Digit', instagram: 'bendgt' },
+            { name: 'Boy Harsher', instagram: 'boyharsher' },
+            { name: 'James Holden', instagram: 'jamesholden808' },
+            { name: 'Barker', instagram: 'sam_barker_' },
+            { name: 'Mathew Jonson', instagram: 'mathew_jonson' },
+            { name: 'Cobblestone Jazz', instagram: 'cobblestonejazz' },
+            { name: 'Fat Dog', instagram: 'fatdogfatdog' },
+            { name: 'Radioactive Man', instagram: 'radioactiveman_uk' },
+            { name: 'Deadletter', instagram: 'deadletter' },
+            { name: 'MAD', instagram: 'make.a.dance' },
+            { name: 'Josh Caffe band', instagram: 'josh_caffe' },
+            { name: 'Decius', instagram: 'decius.official' },
+            { name: 'Tom McFarlane', instagram: 'tromcf' },
+            { name: 'Sam Gellaitry', instagram: 'samgellaitry' },
+            { name: 'Dot Major', instagram: 'dotmajor' },
+            { name: 'Absolute', instagram: 'absoluteishere' },
+            { name: 'Kassian', instagram: 'kassianmusic' },
+            { name: 'Oscar Farrell', instagram: 'oscar_farr' },
+            { name: 'Alfie Aukett', instagram: 'alfmusics' },
+            { name: 'Stinkbug', instagram: '_stinkbug__' },
+            { name: 'Josh Ludlow', instagram: 'joshludloworld' },
+            { name: 'Luxe', instagram: 'luxe_uk' }
+        ];
 
-        const hideLoading = () => {
-            loadingModal.classList.add('opacity-0');
-            setTimeout(() => loadingModal.classList.add('hidden'), 300);
-        };
-        
-        async function callGemini(prompt, maxRetries = 3) {
-            showLoading();
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            
-            let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-            const payload = { contents: chatHistory };
-
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    hideLoading();
-                    
-                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
-                        return result.candidates[0].content.parts[0].text;
-                    } else {
-                        throw new Error("Invalid response structure from Gemini API.");
-                    }
-                } catch (error) {
-                    console.error(`Attempt ${i + 1} failed:`, error);
-                    if (i === maxRetries - 1) {
-                        hideLoading();
-                        return "Sorry, we couldn't generate a response right now. Please try again later.";
-                    }
-                    await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
-                }
-            }
-        }
-
-        generateIdeaBtn.addEventListener('click', async () => {
-            const prompt = "You are a creative director for Next Door Recordings, a record label bridging live and electronic music. Generate a unique concept for a 'From the Fridge' recording session. The concept should include a potential genre fusion, a unique instrument or piece of gear to feature, and a mood or theme for the track. Make it sound exciting and innovative in about 3-4 sentences.";
-            const idea = await callGemini(prompt);
-            sessionIdeaOutput.innerHTML = idea.replace(/\n/g, '<br>');
-            sessionIdeaOutput.classList.remove('hidden');
-        });
-
-        const handleArtistClick = async (event, elements, chart) => {
+        function handleArtistClick(event, elements) {
             if (elements.length > 0) {
                 const dataIndex = elements[0].index;
                 const artist = artistData[dataIndex];
                 
-                const prompt = `Generate a short, creative, and stylish bio (around 40-50 words) for the musician "${artist.name}". Imagine they are an artist on Next Door Recordings, a label that champions music bridging the gap between live performance and electronic sounds. The tone should be modern, slightly edgy, and compelling, like a bio on a cutting-edge record label's website.`;
-                const bio = await callGemini(prompt);
-
-                const instagramLink = artist.instagram 
-                    ? `<a href="https://www.instagram.com/${artist.instagram.replace('@','')}" target="_blank" rel="noopener noreferrer" class="social-link mt-2 inline-block font-bold">Find on Instagram</a>` 
-                    : '';
-
-                artistBioOutput.innerHTML = `
-                    <h3 class="font-bold text-lg mb-2" style="color:#A7C957;">${artist.name}</h3>
-                    <p>${bio.replace(/\n/g, '<br>')}</p>
-                    ${instagramLink}
-                `;
-                artistBioOutput.classList.remove('hidden');
+                if (artist.instagram) {
+                    const url = `https://www.instagram.com/${artist.instagram}`;
+                    window.open(url, '_blank');
+                }
             }
-        };
+        }
 
-        const wrapLabel = (label) => {
+        function wrapLabel(label) {
             const maxLength = 16;
             if (label.length <= maxLength) return label;
             const words = label.split(' ');
@@ -356,13 +278,13 @@
             }
             lines.push(currentLine.trim());
             return lines;
-        };
+        }
         
-        const tooltipTitleCallback = (tooltipItems) => {
+        function tooltipTitleCallback(tooltipItems) {
             const item = tooltipItems[0];
             let label = item.chart.data.labels[item.dataIndex];
             return Array.isArray(label) ? label.join(' ') : label;
-        };
+        }
 
         const sharedTooltipOptions = {
             plugins: {
@@ -379,49 +301,20 @@
             }
         };
 
-        const artistData = [
-            { name: 'Gwenno', instagram: 'gwenno' },
-            { name: 'Hohnen Ford', instagram: 'hohnenford' },
-            { name: 'Yasmin Lacey', instagram: 'yasminlacey' },
-            { name: 'Maddie Ashman', instagram: 'maddieashmanmusic' },
-            { name: 'Marie Davidson', instagram: 'mariedavidson.official' },
-            { name: 'Nightmares on Wax', instagram: 'nightmaresonwax' },
-            { name: 'Binary Digit', instagram: '' },
-            { name: 'Boy Harsher', instagram: 'boyharsher' },
-            { name: 'James Holden', instagram: 'jamesholden808' },
-            { name: 'Barker', instagram: 'sam_barker_' },
-            { name: 'Mathew Jonson', instagram: 'mathew_jonson' },
-            { name: 'Cobblestone Jazz', instagram: '' },
-            { name: 'Fat Dog', instagram: 'fatdogfatdog' },
-            { name: 'Radioactive Man', instagram: '' },
-            { name: 'Deadletter', instagram: 'deadletter' },
-            { name: 'MAD', instagram: '' },
-            { name: 'Josh Caffe band', instagram: 'josh_caffe' },
-            { name: 'Decius', instagram: 'decius.official' },
-            { name: 'Tom McFarlane', instagram: '' },
-            { name: 'Sam Gellaitry', instagram: 'samgellaitry' },
-            { name: 'Dot Major', instagram: 'dotmajor' },
-            { name: 'Absolute', instagram: 'absoluteishere' },
-            { name: 'Kassian', instagram: 'kassianmusic' },
-            { name: 'Oscar Farrell', instagram: '' },
-            { name: 'Alfie Aukett', instagram: '' },
-            { name: 'Stinkbug', instagram: '' },
-            { name: 'Josh Ludlow', instagram: '' },
-            { name: 'Luxe', instagram: 'luxe_uk' }
-        ];
-
         const artistRadarCtx = document.getElementById('artistRadarChart').getContext('2d');
         const artistRadarChart = new Chart(artistRadarCtx, {
             type: 'bubble',
             data: {
-                labels: artistData.map(artist => wrapLabel(artist.name)),
+                labels: artistData.map(function(artist) { return wrapLabel(artist.name) }),
                 datasets: [{
                     label: 'Artist on Radar',
-                    data: artistData.map(() => ({
-                        x: Math.random() * 10,
-                        y: Math.random() * 10,
-                        r: 15 
-                    })),
+                    data: artistData.map(function() {
+                        return {
+                            x: Math.random() * 10,
+                            y: Math.random() * 10,
+                            r: 15 
+                        }
+                    }),
                     backgroundColor: '#A7C957',
                     borderColor: '#F0EAD6',
                     borderWidth: 1,
@@ -435,17 +328,17 @@
                 ...sharedTooltipOptions,
                 scales: { x: { display: false }, y: { display: false } },
                 plugins: { ...sharedTooltipOptions.plugins, legend: { display: false } },
-                onClick: (event, elements) => handleArtistClick(event, elements, artistRadarChart)
+                onClick: handleArtistClick
             }
         });
 
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
-                    navLinks.forEach(link => {
+                    navLinks.forEach(function(link) {
                         link.classList.remove('active');
                         if (link.getAttribute('href').substring(1) === entry.target.id) {
                             link.classList.add('active');
@@ -455,11 +348,10 @@
             });
         }, { threshold: 0.5 });
 
-        sections.forEach(section => {
+        sections.forEach(function(section) {
             observer.observe(section);
         });
     </script>
 
 </body>
 </html>
-
